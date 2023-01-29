@@ -1,6 +1,8 @@
 package net.derrick.tutorialmod;
 
 import com.mojang.logging.LogUtils;
+import net.derrick.tutorialmod.item.ModItems;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -25,6 +27,8 @@ public class TutorialMod
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        ModItems.register(modEventBus);
+
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
@@ -44,8 +48,11 @@ public class TutorialMod
 
     private void addCreative(CreativeModeTabEvent.BuildContents event)
     {
-
+        if (event.getTab() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(ModItems.Brazy);
+        }
     }
+
 
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
