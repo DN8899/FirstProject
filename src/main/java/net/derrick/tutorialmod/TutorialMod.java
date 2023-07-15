@@ -1,6 +1,7 @@
 package net.derrick.tutorialmod;
 
 import com.mojang.logging.LogUtils;
+import net.derrick.tutorialmod.block.ModBlocks;
 import net.derrick.tutorialmod.item.ModItems;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Blocks;
@@ -14,6 +15,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -27,6 +29,7 @@ public class TutorialMod
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        ModBlocks.register(modEventBus);
         ModItems.register(modEventBus);
 
         // Register the commonSetup method for modloading
@@ -46,10 +49,14 @@ public class TutorialMod
         LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
     }
 
-    private void addCreative(CreativeModeTabEvent.BuildContents event)
+    private void addCreative(CreativeModeTabEvent.@NotNull BuildContents event)
     {
-        if (event.getTab() == CreativeModeTabs.INGREDIENTS) {
+        if (event.getTab() == CreativeModeTabs.COMBAT) {
             event.accept(ModItems.Brazy);
+        }
+
+        if (event.getTab() == CreativeModeTabs.BUILDING_BLOCKS) {
+            event.accept(ModBlocks.BRAZY_BLOCK);
         }
     }
 
